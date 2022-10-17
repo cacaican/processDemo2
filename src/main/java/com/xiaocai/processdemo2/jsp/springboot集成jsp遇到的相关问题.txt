@@ -1,0 +1,77 @@
+引入jsp时候的问题：
+
+1.jsp报错javax.el.ExpressionFactory.getStreamELResolver()Ljavax/el/ELResolver;
+问题原因：同时有activity框架，其中el的实现依赖有问题
+参考资料： https://www.cnblogs.com/zsg88/p/12334188.html
+解决方式：
+<dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>de.odysseus.juel</groupId>
+                    <artifactId>juel-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>de.odysseus.juel</groupId>
+                    <artifactId>juel-spi</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+		
+		并且加入
+		  <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>el-impl</artifactId>
+            <version>2.2</version>
+        </dependency>
+		
+2.jsp页面乱码
+问题原因:jsp定义是复制过来的，其中只在html部分设置了utf-8字符集，并未在jsp文件首行做字符集限制，
+参考资料：https://blog.csdn.net/bin25/article/details/78060691
+解决方式：jsp文件首行中添加：<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+3.使用
+<jsp:scriptlet>
+   代码片段
+</jsp:scriptlet>
+方式定义jsp脚本报错，无法渲染
+
+原因：暂时没找到，菜鸟教程中说可以这样，但是实际测试不行
+解决方式:暂时使用<% 代码片段 %> 的方式喽
+
+
+4.springboot项目中开启jsp的热部署配置：
+参考资料：https://blog.csdn.net/weixin_43734095/article/details/106955758
+jsp 页面热部署
+
+在 springboot 中默认对 jsp 运行为生产模式，不允许修改内容保存后立即生效，因此在开发过程需要调试 jsp 页面每次需要重新启动服务器，这样极大的影响了我们的效率。
+springboot 中提供了可以将默认的生产模式修改为调试模式，改为调试模式后就可以保存立即生效。
+只需要需要在配置文件中加入如下配置即可修改为调试模式，即开启了 jsp 页面热部署。
+
+# 开启jsp页面的热部署
+server.servlet.jsp.init-parameters.development=true
+ 
+ springboot 中 devtools 热部署
+springboot 为提供了全局项目热部署，日后在开发过程中修改了部分代码以及相关配置文件后，不需要每次重启使修改生效，在项目中开启了 springboot 全局热部署之后只需要在修改之后等待几秒即可使修改生效。
+
+在项目中添加依赖：
+
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-devtools</artifactId>
+   <optional>true</optional>
+</dependency>
+
+设置idea中支持自动编译：
+开启自动编译
+Settings | Build，Execution，Deployment | Compiler 勾选 Build project automatically
+
+开启允许在运行过程中修改文件
+按键：ctrl + alt + shift + /
+选择 1.Registry...
+勾选 compiler.automake.allow.when.app.running 这个选项
+
+启动项目检测热部署是否生效：
+默认没有开启热部署，启动项目时显示的是 [ main]
+开启热部署以后，启动项目显示的是：[ restartedMain]
