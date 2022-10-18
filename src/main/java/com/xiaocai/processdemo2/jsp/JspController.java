@@ -58,6 +58,7 @@ public class JspController {
     public String 中文名称(Model model) {
         return "中文名称";
     }
+
     @GetMapping("基本语法")
     public String 基本语法(Model model) {
         return "jspGrammer/基本语法";

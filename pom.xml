@@ -149,6 +149,13 @@
 <!--https://blog.csdn.net/weixin_43734095/article/details/106955758
 springboot 中 devtools 热部署
 springboot 为提供了全局项目热部署，日后在开发过程中修改了部分代码以及相关配置文件后，不需要每次重启使修改生效，在项目中开启了 springboot 全局热部署之后只需要在修改之后等待几秒即可使修改生效。-->
+        <!-- hutool工具包  -->
+        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.8</version>
+        </dependency>
 
     </dependencies>
 
